@@ -14,7 +14,15 @@ type command struct {
 
 	subcommands []*command
 	options     []*option
-	arguments   []*argument
+	positionals []*positional
+}
+
+func (c *command) subcommandNames() []string {
+	var names []string
+	for _, subcommand := range c.subcommands {
+		names = append(names, subcommand.name)
+	}
+	return names
 }
 
 func newCommand(v reflect.Value, visited map[reflect.Type]bool) (*command, error) {
@@ -85,13 +93,13 @@ func newCommand(v reflect.Value, visited map[reflect.Type]bool) (*command, error
 	//positional arguments and subcommands are mutually exclusive and cannot be used simultaneously in the same command.
 	if len(cmd.subcommands) == 0 {
 		err = scanStruct(v.Elem(), func(field *reflect.StructField, value reflect.Value) error {
-			arg, err := newArgument(field, value)
+			pos, err := newPositional(field, value)
 			if err != nil {
 				return err
 			}
 
-			if arg != nil {
-				cmd.arguments = append(cmd.arguments, arg)
+			if pos != nil {
+				cmd.positionals = append(cmd.positionals, pos)
 			}
 
 			return nil

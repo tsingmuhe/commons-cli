@@ -2,6 +2,7 @@ package cli
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -18,6 +19,14 @@ type CommandLine struct {
 }
 
 func (c *CommandLine) Run(args []string) int {
+	tokens := tokenize(args)
+
+	commandToken := tokens[0]
+	fmt.Println(commandToken)
+
+	tokens = tokens[1:]
+	resolveSubcommandToken(tokens, c.root.subcommandNames())
+
 	return 0
 }
 

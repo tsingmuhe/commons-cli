@@ -4,22 +4,18 @@ A Go-based command line parsing tool.
 
     <myapp> [<subcommand>] [OPTIONS] [--] [ARGUMENTS]
 
-### Format Explanation:
-
 - `myapp`: Main program name
 - `[<subcommand>]`: Subcommand (optional) specifying the operation to perform
 - `[OPTIONS]`: Command-specific options (optional)
 - `--`: Option terminator (optional) to separate options from positional arguments
 - `[ARGUMENTS]`: Positional arguments (optional) providing specific data
 
-### Conventions
-
-#### Subcommand
+### Subcommand Conventions
 
 - A subcommand must immediately follow the parent command.
 - No options or positional arguments may appear between the parent command and the subcommand.
 
-#### Options
+### Options Conventions
 
 - Options are named parameters, denoted with either a hyphen and a single-letter name (e.g., `-h`) or a double hyphen
   and a multiple-letter name (e.g., `--verbose`).
@@ -35,12 +31,12 @@ A Go-based command line parsing tool.
 
 - Subcommand-specific options must appear after the subcommand.
 
-#### Double Dash (`--`) Separator
+### Double Dash (`--`) Separator Conventions
 
 - Used to signify end of options
 - All subsequent arguments treated as positional arguments, even if they start with `-`
 
-#### Positional arguments
+### Positional Arguments Conventions
 
 - The order of positional arguments is often important. (e.g., `cp foo bar` means something different from `cp bar foo`)
 - The command syntax requires options to come before positional arguments.

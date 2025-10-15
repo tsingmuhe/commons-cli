@@ -15,18 +15,36 @@ type command struct {
 	arguments   []*argument
 }
 
-func newCommand(name, desc string, cv reflect.Value) (*command, error) {
-	if name == "" {
-		return nil, errors.New("empty command name: " + cv.Type().String())
+var commandInterface = reflect.TypeOf((*Command)(nil)).Elem()
+
+func newCommand(v reflect.Value) (*command, error) {
+	t := v.Type()
+
+	if t.Kind() != reflect.Pointer || t.Elem().Kind() != reflect.Struct { // command must be a pointer to a struct
+		return nil, nil
 	}
 
-	rv := reflect.Indirect(cv)
-	rt := rv.Type()
+	if !t.Implements(commandInterface) {
+		return nil, nil
+	}
 
-	cmd := &command{name: name, desc: desc}
+	if v.IsNil() {
+		v.Set(reflect.New(t.Elem()))
+	}
 
-	for i := 0; i < rt.NumField(); i++ {
-		sf := rt.Field(i)
+	c := v.Interface().(Command)
+	name := c.Name()
+	if name == "" {
+		return nil, errors.New("empty command name: " + t.String())
+	}
+
+	cmd := &command{name: name, desc: c.Description(), run: c.Run}
+
+	ev := v.Elem()
+	et := ev.Type()
+
+	for i := 0; i < et.NumField(); i++ {
+		sf := et.Field(i)
 
 		if !sf.IsExported() {
 			// Ignore unexported fields.
@@ -45,50 +63,25 @@ func newCommand(name, desc string, cv reflect.Value) (*command, error) {
 			}
 		}
 
-		t := sf.Type
-		if t.Kind() == reflect.Pointer && t.Elem().Kind() == reflect.Struct && implementsCommand(t) {
-			v := rv.Field(i)
-			if v.IsNil() {
-				v.Set(reflect.New(t.Elem()))
-			}
-
-			c := v.Interface().(Command)
-			subcommand, err := newCommand(c.Name(), c.Description(), v)
-			if err != nil {
-				return nil, err
-			}
-
-			if subcommand != nil {
-				cmd.subcommands = append(cmd.subcommands, subcommand)
-			}
-
+		subcommand, err := newCommand(ev.Field(i))
+		if err != nil {
+			return nil, err
+		}
+		if subcommand != nil {
+			cmd.subcommands = append(cmd.subcommands, subcommand)
 			continue
 		}
 
-		short := sf.Tag.Get("short")
-		if short == "-" {
-			short = ""
+		op, err := newOption(sf, ev.Field(i))
+		if err != nil {
+			return nil, err
 		}
-
-		long := sf.Tag.Get("long")
-		if long == "-" {
-			long = ""
-		}
-
-		if len(short) > 0 || len(long) > 0 {
-			op, err := newOption(sf, rv.Field(i))
-			if err != nil {
-				return nil, err
-			}
-
-			if op != nil {
-				cmd.options = append(cmd.options, op)
-			}
-
+		if op != nil {
+			cmd.options = append(cmd.options, op)
 			continue
 		}
 
-		arg, err := newArgument(sf, rv.Field(i))
+		arg, err := newArgument(sf, ev.Field(i))
 		if err != nil {
 			return nil, err
 		}
@@ -99,9 +92,4 @@ func newCommand(name, desc string, cv reflect.Value) (*command, error) {
 	}
 
 	return cmd, nil
-}
-
-func implementsCommand(t reflect.Type) bool {
-	commandType := reflect.TypeOf((*Command)(nil)).Elem()
-	return t.Implements(commandType)
 }

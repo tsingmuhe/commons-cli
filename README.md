@@ -9,15 +9,15 @@ Format Explanation:
 - `myapp`: Main program name
 - `[<subcommand>]`: Subcommand (optional) specifying the operation to perform
 - `[OPTIONS]`: Command-specific options (optional)
-- `--`: Option terminator (optional) to separate options from arguments
-- `[ARGUMENTS]`: Arguments (optional) providing specific data
+- `--`: Option terminator (optional) to separate options from positional arguments
+- `[ARGUMENTS]`: Positional arguments (optional) providing specific data
 
 ## Conventions
 
 #### Subcommand
 
 - A subcommand must immediately follow the parent command.
-- No options or arguments may appear between the parent command and the subcommand.
+- No options or positional arguments may appear between the parent command and the subcommand.
 
 #### Options
 
@@ -40,7 +40,7 @@ Format Explanation:
 - Used to signify end of options
 - All subsequent arguments treated as positional arguments, even if they start with `-`
 
-#### Arguments (Positional arguments)
+#### Positional arguments
 
 - The order of positional arguments is often important. (e.g., `cp foo bar` means something different from `cp bar foo`)
 - The command syntax requires options to come before positional arguments.
@@ -57,19 +57,18 @@ Format Explanation:
   also makes it easier to make changes to how you accept input in the future. Sometimes when using positional arguments,
   it’s impossible to add new input without breaking existing behavior or creating ambiguity.
 
-- **Have full-length versions of all options.** you don’t have to look up the meaning of flags everywhere.
+- **Have full-length versions of all options.** you don’t have to look up the meaning of options everywhere.
 
 - **If you’ve got two or more positional arguments for different things, you’re probably doing something wrong.** A tool
   should have only one core positional argument, and all other arguments must be passed via named options.
 
-- **Display help when passed `-h` or `--help` flags.** This also applies to subcommands which might have their own help
+- **Display help when passed `-h` or `--help` options.** This also applies to subcommands which might have their own help
   text.
 
-- **Display concise help text by default.** When myapp or myapp subcommand requires arguments to function, and is run
-  with
-  no arguments, display concise help text.
+- **Display concise help text by default.** When `myapp` or `myapp subcommand` requires arguments to function, and is run
+  with no arguments, display concise help text.
 
-- **Don’t overload `-h`.** Ignore any other flags and arguments that are passed.
+- **Don’t overload `-h`.** Ignore any other options and arguments that are passed.
 
 #### Output
 

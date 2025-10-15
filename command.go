@@ -8,6 +8,7 @@ import (
 type command struct {
 	name string
 	desc string
+	run  func() int
 
 	subcommands []*command
 	options     []*option

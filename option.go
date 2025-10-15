@@ -3,7 +3,9 @@ package cli
 import "reflect"
 
 type option struct {
-	name string
+	short string
+	long  string
+	desc  string
 }
 
 func newOption(sf reflect.StructField, rv reflect.Value) (*option, error) {

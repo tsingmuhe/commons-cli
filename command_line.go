@@ -23,7 +23,6 @@ func (c *CommandLine) Run(args []string) int {
 
 func Create(c Command, version string) (*CommandLine, error) {
 	rv := reflect.ValueOf(c)
-
 	if rv.Kind() != reflect.Pointer || rv.Elem().Kind() != reflect.Struct {
 		return nil, errors.New("command must be a pointer to a struct")
 	}

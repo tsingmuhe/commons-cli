@@ -4,7 +4,7 @@ A Go-based command line parsing tool.
 
     <myapp> [<subcommand>] [OPTIONS] [--] [ARGUMENTS]
 
-Format Explanation:
+### Format Explanation:
 
 - `myapp`: Main program name
 - `[<subcommand>]`: Subcommand (optional) specifying the operation to perform
@@ -12,7 +12,7 @@ Format Explanation:
 - `--`: Option terminator (optional) to separate options from positional arguments
 - `[ARGUMENTS]`: Positional arguments (optional) providing specific data
 
-## Conventions
+### Conventions
 
 #### Subcommand
 

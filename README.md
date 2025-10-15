@@ -1,8 +1,6 @@
 A Go-based command line parsing tool.
 
-### Command-line syntax
-
-------------------------
+## Command-line syntax
 
     <myapp> [<subcommand>] [OPTIONS] [--] [ARGUMENTS]
 
@@ -14,9 +12,7 @@ Format Explanation:
 - `--`: Option terminator (optional) to separate options from arguments
 - `[ARGUMENTS]`: Arguments (optional) providing specific data
 
-### Conventions
-
-------------------------
+## Conventions
 
 #### Subcommand
 
@@ -50,13 +46,10 @@ Format Explanation:
 - The command syntax requires options to come before positional arguments.
 - Positional arguments after a subcommand belong to that subcommand.
 
-### Example commands
+## Example commands
 
-------------------------
 
-### Best Practices
-
-------------------------
+## Best Practices
 
 #### Options and positional arguments
 

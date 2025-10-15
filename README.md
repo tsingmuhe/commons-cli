@@ -69,7 +69,7 @@ Format Explanation:
   with
   no arguments, display concise help text.
 
-- **Don’t overload -h.** Ignore any other flags and arguments that are passed.
+- **Don’t overload `-h`.** Ignore any other flags and arguments that are passed.
 
 #### Output
 

@@ -10,7 +10,7 @@ type option struct {
 	required bool
 }
 
-func newOption(sf reflect.StructField, rv reflect.Value) (*option, error) {
+func newOption(sf *reflect.StructField, rv reflect.Value) (*option, error) {
 	short := sf.Tag.Get("short")
 	long := sf.Tag.Get("long")
 	if len(short) == 0 && len(long) == 0 {

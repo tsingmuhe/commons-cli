@@ -31,7 +31,8 @@ func Create(c Command, version string) (*CommandLine, error) {
 		return nil, errors.New("command must not be nil")
 	}
 
-	cmd, err := newCommand(c.Name(), c.Description(), rv)
+	visited := map[reflect.Type]bool{}
+	cmd, err := newCommand(rv, visited)
 	if err != nil {
 		return nil, err
 	}

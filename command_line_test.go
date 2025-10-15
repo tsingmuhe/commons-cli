@@ -12,7 +12,7 @@ type RootCommand struct {
 	Help    bool      `short:"h" long:"--help" description:"Show help"`
 	File    [5]string `description:"Specify a file"`
 
-	*SubCommand
+	*RootCommand
 }
 
 func (r *RootCommand) Name() string {

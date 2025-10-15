@@ -41,6 +41,7 @@ A Go-based command line parsing tool.
 - The order of positional arguments is often important. (e.g., `cp foo bar` means something different from `cp bar foo`)
 - The command syntax requires options to come before positional arguments.
 - Positional arguments after a subcommand belong to that subcommand.
+- Positional arguments and subcommands are mutually exclusive and cannot be used simultaneously in the same command.
 
 ## Example commands
 
